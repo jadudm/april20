@@ -1,1 +1,9 @@
-test
+April20
+====================
+At Allegheny College, we have a course numbered 420, which is a course about *compilers*. 
+
+A compiler is a collection of software tools that transform one language into another. Typically, a compiler takes a source language, and transforms it into assembly. This project explores the creation of a [nanopass compiler](http://lambda-the-ultimate.org/node/1589) from back-to-front.
+
+Having never written a compiler back-to-front, we started with an expressive target language: [LLVM](http://llvm.org/). Our initial input language will be arithmetic expressions. Our goal is to transform this language, stepwise, into LLVM assembly, which will then be transformed into an executable.
+
+Once we have a working compiler for the simplest language we can envision, we will extend it to include things like conditionals, control constructs, binding forms, and the like. Our goal isn't necessarily to build a particular compiler of any particular complexity, but instead to refresh our memory on the use of Racket (nee Scheme), gain a bit of experience working with LLVM, and experiment with back-to-front compiler construction.
