@@ -11,8 +11,8 @@
 ;; <name>      := symbol?
 ;; <number>    := number?
 
-(define-struct program (statements result))
-(define-struct assign (name value))
-(define-struct binop (op lhs rhs))
-(define-struct int (value))
-(define-struct result (name))
+(struct program (statements))
+(struct assign (name value))
+(struct binop (op lhs rhs))
+(struct int (value))
+(struct result (name))

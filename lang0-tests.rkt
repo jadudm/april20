@@ -2,10 +2,10 @@
 
 (require rackunit rackunit/text-ui)
 (require "lang0.rkt")
-(require "passes.rkt")
+(require "lang0-passes.rkt")
 
-(define i1 (lang0:make-int 3))
-(define i2 (lang0:make-int 5))
+(define i1 (lang0:int 3))
+(define i2 (lang0:int 5))
 
 (define int-struct-tests
   (test-suite
@@ -25,10 +25,10 @@
      (list "%t1 = 8"
            "%result = %t1")
      (ast-to-llvm 
-      (lang0:make-program
+      (lang0:program
        (list 
-        (lang0:make-assign 't1 (lang0:make-int 8))
-        (lang0:make-result 't1)))))
+        (lang0:assign 't1 (lang0:int 8))
+        (lang0:result 't1)))))
     
    (test-case
     "Convert a binop + to an LLVM string"
@@ -36,14 +36,14 @@
      (list "%t1 = add i32 3, 5"
            "%result = %t1")
      (ast-to-llvm
-      (lang0:make-program
+      (lang0:program
        (list
-        (lang0:make-assign 't1 
-                     (lang0:make-binop 
+        (lang0:assign 't1 
+                     (lang0:binop 
                       '+
-                      (lang0:make-int 3)
-                      (lang0:make-int 5)))
-        (lang0:make-result 't1))))))
+                      (lang0:int 3)
+                      (lang0:int 5)))
+        (lang0:result 't1))))))
    )))
 
 (define all-tests
