@@ -1,0 +1,3 @@
+# Ignore DrRacket temporary files
+*~
+compiled/*
