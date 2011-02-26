@@ -19,7 +19,7 @@
 (define (ast-to-llvm ast)
   (match ast 
     [(lang0:program statements)
-     (map ast-to-llvm statements)]
+     (map ast-to-llvm statements))]
     [(lang0:assign name val) 
      (format "%~a = ~a" name (ast-to-llvm val))]
     [(lang0:result name) 
