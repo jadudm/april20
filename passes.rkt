@@ -1,5 +1,6 @@
 #lang racket
 (require "structures.rkt")
+(provide (all-defined-out))
 
 (define (ast-to-llvm ast)
   (match ast 
