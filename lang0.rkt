@@ -3,7 +3,7 @@
 (provide (prefix-out lang0: (all-defined-out)))
 
 ;; Grammar
-;; <program>   := (program <assign> 1.. <result>)
+;; <program>   := (program (<assign> 1.. <result>))
 ;; <assign>    := (assign <name> <exp>)
 ;; <exp>       := (binop <op> <int> <int>)
 ;; <int>       := (int <number>)
