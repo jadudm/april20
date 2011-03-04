@@ -1,6 +1,6 @@
 #lang racket
 ;; PROVIDES
-(provide ast-to-llvm)
+(provide ast-to-llvm verify-lang0)
 ;; REQUIRES
 (require "lang0.rkt")
 
@@ -9,7 +9,25 @@
 ;; PURPOSE
 ;; Verifies that we have a language tree only in lang0.
 (define (verify-lang0 ast)
-  '...)
+  (match ast
+    [(lang0:program statements)
+     (lang0:program 
+      (map verify-lang0 statements))]
+    [(lang0:assign name val) 
+     (if (symbol? name) 
+         (lang0:assign name (verify-lang0 val))
+         (error "Not lang0:assign"))]
+    [(lang0:result name) 
+     (if (symbol? name) 
+         (lang0:result name) 
+         (error "Not lang0:result"))]
+    [(lang0:binop op lhs rhs) 
+     (if (member op '(+ - * /)) 
+         (lang0:binop op (verify-lang0 lhs) (verify-lang0 rhs)) 
+         (error "Not lang0:binop"))]
+    [(lang0:int v) (if (number? v) 
+                       (lang0:int v) 
+                       (error "Not lang0:int"))]))
 
 ;; PASS
 ;; ast-to-llvm :: lang0 -> (list-of string)

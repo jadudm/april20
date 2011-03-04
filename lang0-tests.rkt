@@ -25,10 +25,11 @@
      (list "%t1 = 8"
            "%result = %t1")
      (ast-to-llvm 
+      (verify-lang0
       (lang0:program
        (list 
         (lang0:assign 't1 (lang0:int 8))
-        (lang0:result 't1)))))
+        (lang0:result 't1))))))
     
    (test-case
     "Convert a binop + to an LLVM string"
