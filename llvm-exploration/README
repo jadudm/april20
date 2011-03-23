@@ -1,0 +1,13 @@
+To compile and run this code:
+
+llvm-as test.ll
+
+That assembles the file. Then, we can interpret it?
+
+lli test.bc
+
+We can then see the return code.
+
+echo $?
+
+This seems to work.
