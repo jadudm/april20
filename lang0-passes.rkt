@@ -41,12 +41,13 @@
     [(lang0:assign name val) 
      (format "%~a = ~a" name (ast-to-llvm val))]
     [(lang0:result name) 
-     (format "%result = %~a" name)]
-    [(lang0:binop op lhs rhs) 
-     (format "~a i32 ~a, ~a" 
+     (format "%result = call i32 @ident(i32 %~a)" name)]
+    [(lang0:binop op lhs rhs)
+     ;; <return type> instruction op1 op2
+     (format "i32 ~a ~a, ~a" 
              (handleop op) (ast-to-llvm lhs) (ast-to-llvm rhs))]
     [(lang0:int v) 
-     (format "~a" v)]
+     (format "call i32 @ident (i32 ~a)" v)]
     ))
 
 ;; CONTRACT

@@ -3,8 +3,8 @@
          "write-out.rkt"
          "lang0.rkt")
 
-(define (driver code)
-  (write-out (ast-to-llvm code)))
+(define (driver code filename)
+  (write-out (ast-to-llvm code) filename))
 
 (define prog1 (lang0:program
                (list 
@@ -19,3 +19,6 @@
                                (lang0:int 3)
                                (lang0:int 5)))
                 (lang0:result 't1))))
+
+(driver prog1 'prog1)
+(driver prog2 'prog2)
