@@ -29,26 +29,62 @@
                        (lang0:int v) 
                        (error "Not lang0:int"))]))
 
+
+#| 
+THIS IS LANG ZERO
+(struct program (constants statements result))
+(struct constant (name value))
+(struct assign (name bop)) ;; ? Are these always going to be a binop on the RHS?
+(struct binop (op name name))
+(struct result (name))
+|#
+
 ;; PASS
-;; ast-to-llvm :: lang0 -> (list-of string)
+;; L0-to-llvm :: lang0 -> (list-of string)
 ;; PURPOSE
 ;; Takes lang0 (which is practically LLVM assembly) and transforms
 ;; it into a list of strings for inclusion in our wrapper.
-(define (ast-to-llvm ast)
+(define (L0-to-llvm ast)
   (match ast 
-    [(lang0:program statements)
-     (map ast-to-llvm statements)]
-    [(lang0:assign name val) 
-     (format "%~a = ~a" name (ast-to-llvm val))]
-    [(lang0:result name) 
-     (format "%result = call i32 @ident(i32 %~a)" name)]
-    [(lang0:binop op lhs rhs)
-     ;; <return type> instruction op1 op2
-     (format "i32 ~a ~a, ~a" 
-             (handleop op) (ast-to-llvm lhs) (ast-to-llvm rhs))]
-    [(lang0:int v) 
-     (format "call i32 @ident (i32 ~a)" v)]
-    ))
+    [(lang0:program constants statements res) 
+     ;; Return the LLVM program as one big ugly string. Ew.
+     (format "
+;; Format string
+@.str = private constant [4 x i8] c\"%d\\0A\\00\", align 1
+
+;; Globals
+~a
+
+define i32 @main () {
+;; Allocate space for local value of constants
+~a
+
+;; Load constants
+~a
+
+;; Code
+~a
+
+;; The Result
+%result = ~a
+
+;; Print the result
+  %printResult = call i32 (i8*, ...)*
+       @printf (i8* noalias getelementptr inbounds
+                  ([4 x i8]* @.str, i64 0, i64 0),
+                  i32 %result) nounwind
+
+  ; It turns out Unix return codes are modulo 256.
+  ret i32 0
+}
+
+declare i32 @printf (i8* nocapture, ...) nounwind
+" 
+             (constants-to-globals constants)
+             (constants-to-allocas constants)
+             (constants-to-loads   constants)
+             (statements-to-llvm   statements)
+             (result-name res))]))
 
 ;; CONTRACT
 ;; handleop :: symbol -> string

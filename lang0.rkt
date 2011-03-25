@@ -3,15 +3,16 @@
 (provide (prefix-out lang0: (all-defined-out)))
 
 ;; Grammar
-;; <program>   := (program (<assign> 1.. <result>))
-;; <assign>    := (assign <name> <exp>)
-;; <exp>       := (binop <op> <name> <name>)
+;; <program>   := (program (<constant> ...) (<assign> ...) <result>)
+;; <constant>  := (constant <name> <integer>)
+;; <assign>    := (assign <name> <binop>)
+;; <binop>     := (binop <op> <name> <name>)
 ;; <result>    := (result <name>)
 ;; <name>      := symbol?
-;; <number>    := number?
+;; <integer>   := integer?
 
-(struct program (statements))
-(struct load-const (name))
-(struct assign (name value))
-(struct binop (op lhs rhs))
+(struct program (constants statements result))
+(struct constant (name value))
+(struct assign (name bop)) ;; ? Are these always going to be a binop on the RHS?
+(struct binop (op lname rname))
 (struct result (name))
